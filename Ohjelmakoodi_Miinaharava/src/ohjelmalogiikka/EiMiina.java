@@ -1,15 +1,17 @@
 
-package src;
+package ohjelmalogiikka;
 
 public class EiMiina extends Nappi {
     private int xkoordinaatti;
     private int ykoordinaatti;
     private Boolean onNakyva;
+    private Boolean lipullinen;
     private String piilotettuTeksti;
     private int miinojaYmparilla;
 
     public EiMiina(int xkoordinaatti, int ykoordinaatti) {
         super(xkoordinaatti, ykoordinaatti, 0+"");
+        
     }
     
     @Override

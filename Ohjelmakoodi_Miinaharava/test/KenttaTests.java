@@ -1,25 +1,19 @@
 
 import java.util.ArrayList;
+import ohjelmalogiikka.Kentta;
+import ohjelmalogiikka.Nappi;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import src.EiMiina;
-import src.Kentta;
-import src.Miina;
-import src.Nappi;
 
-public class MiinaharavaTest {
-    
-    Nappi nappi;
-    Miina miina;
-    EiMiina eiMiina;
+public class KenttaTests {
     Kentta kentta;
     Kentta kentta2;
     
-    public MiinaharavaTest() {
+    public KenttaTests() {
     }
     
     @BeforeClass
@@ -32,57 +26,12 @@ public class MiinaharavaTest {
     
     @Before
     public void setUp() {
-        nappi = new Nappi(4,5);
-        miina = new Miina(7,9);
-        eiMiina = new EiMiina(6,9);
         kentta = new Kentta(3,4);
         kentta2 = new Kentta(4,3);
     }
     
     @After
     public void tearDown() {
-    }
-    
-    @Test
-    public void napinGetteritAntavatOikeatArvot() {
-        assertEquals("45",nappi.getXkoordinaatti()+""+nappi.getYkoordinaatti());
-    }
-    
-    @Test
-    public void teeNakyvaksiToimii() {
-        nappi.teeNakyvaksi();
-        assertEquals("O",nappi.toString());
-    }
-    
-    @Test
-    public void napinSetPiilotettuTekstiToimii() {
-        nappi.setPiilotettuTeksti(":)");
-        nappi.teeNakyvaksi();
-        assertEquals(":)", nappi.toString());
-    }
-    
-    @Test
-    public void miinanGetteritAntavatOikeatArvot() {
-        assertEquals("79",miina.getXkoordinaatti()+""+miina.getYkoordinaatti());
-    }
-    
-    @Test
-    public void miinanKaivaminenJaTuloste() {
-        miina.teeNakyvaksi();
-        assertEquals("M", miina.toString());
-    }
-    
-    @Test
-    public void EiMiinaKonstruktoriJaTuloste() {
-        eiMiina.teeNakyvaksi();
-        assertEquals("0", eiMiina.toString());
-    }
-    
-    @Test
-    public void EiMiinaMiinanLisaysToimii() {
-        eiMiina.teeNakyvaksi();
-        eiMiina.lisaaMiinaViereen();
-        assertEquals("1", eiMiina.toString());
     }
     
     @Test
@@ -137,5 +86,22 @@ public class MiinaharavaTest {
             nappi.teeNakyvaksi();
         }
         assertEquals("OOO\nOXO\nOOO\nXXX\n", kentta.toString());
+    }
+    
+    @Test
+    public void randomKonstruktoriLisaaOikeanMaaranMiinojaListaan() {
+        kentta= new Kentta(10,5,5);
+        assertEquals("5", ""+kentta.getMiinat().size());
+    }
+    
+    @Test
+    public void MiinalistanAlkiotKaikkiMiinoja() {
+        kentta= new Kentta(10,5,5);
+        String tuloste="";
+        for (Nappi nappi : kentta.getMiinat()) {
+            nappi.teeNakyvaksi();
+            tuloste+=nappi.toString();
+        }
+        assertEquals("MMMMM", tuloste);
     }
 }
