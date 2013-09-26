@@ -1,6 +1,9 @@
 
 package ohjelmalogiikka;
-
+/**
+ * Luokan Nappi aliluokka, joka kuvaa Nappeja, jotka ovat Miinoja. Kun Miinan kohdasta kaivetaan peli loppuu.
+ * @author Cadaei
+ */
 public class Miina extends Nappi {
     private int xkoordinaatti;
     private int ykoordinaatti;

@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import ohjelmalogiikka.Asetukset;
 import ohjelmalogiikka.Kentta;
 import ohjelmalogiikka.Nappi;
 import org.junit.After;
@@ -26,8 +27,8 @@ public class KenttaTests {
     
     @Before
     public void setUp() {
-        kentta = new Kentta(3,4);
-        kentta2 = new Kentta(4,3);
+        kentta = new Kentta(new Asetukset(3,4,0));
+        kentta2 = new Kentta(new Asetukset(4,3,0));
     }
     
     @After
@@ -90,13 +91,13 @@ public class KenttaTests {
     
     @Test
     public void randomKonstruktoriLisaaOikeanMaaranMiinojaListaan() {
-        kentta= new Kentta(10,5,5);
+        kentta= new Kentta(new Asetukset(10,5,5));
         assertEquals("5", ""+kentta.getMiinat().size());
     }
     
     @Test
     public void MiinalistanAlkiotKaikkiMiinoja() {
-        kentta= new Kentta(10,5,5);
+        kentta= new Kentta(new Asetukset(10,5,5));
         String tuloste="";
         for (Nappi nappi : kentta.getMiinat()) {
             nappi.teeNakyvaksi();

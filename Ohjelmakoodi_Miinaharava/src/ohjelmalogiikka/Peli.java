@@ -2,7 +2,10 @@
 package ohjelmalogiikka;
 
 import java.util.Scanner;
-
+/**
+ * Luokka kuvaa Miinaharavapelin ohjelmalogiikkaa. Alussa luodaan pelin kenttä, ja jatkossa ylläpidetään peliä.
+ * @author Cadaei
+ */
 public class Peli {
     private Kentta kentta;
     private boolean onKaynnissa;
@@ -17,7 +20,7 @@ public class Peli {
     }
     
     public void run() {
-        uusiPeli(asetukset.getKentanLeveys(), asetukset.getKentanKorkeus(), asetukset.getMiinoja());
+        uusiPeli(asetukset);
         
         while(onKaynnissa) {
             tulostaKentta();
@@ -29,10 +32,10 @@ public class Peli {
         }
     }
     
-    public void uusiPeli(int kentanLeveys, int kentanKorkeus, int miinoja) {
-        this.kentta=new Kentta(kentanLeveys, kentanKorkeus, miinoja);
+    public void uusiPeli(Asetukset asetukset) {
+        this.kentta=new Kentta(asetukset);
         this.onKaynnissa=true;
-        this.miinojaJaljella=miinoja;
+        this.miinojaJaljella=asetukset.getMiinoja();
         tulostaKomennot();
     }
     
@@ -81,7 +84,7 @@ public class Peli {
         System.out.print("Komento: ");
         komento=scanner.nextLine();
         if(komento.equals("n")) {
-            uusiPeli(asetukset.getKentanLeveys(), asetukset.getKentanKorkeus(), asetukset.getMiinoja());
+            uusiPeli(asetukset);
         } if(komento.equals("k")) {
             kaiva();
         } if(komento.equals("l")) {
