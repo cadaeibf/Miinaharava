@@ -3,7 +3,6 @@ package main;
 
 import javax.swing.SwingUtilities;
 import ohjelmalogiikka.Asetukset;
-import ohjelmalogiikka.Peli;
 
 /**
  * Pääluokka käynnistää ohjelman kutsumalla graafista käyttöliittymää
@@ -12,7 +11,11 @@ import ohjelmalogiikka.Peli;
 public class Main {
 
     public static void main(String[] args) {
-        Kayttoliittyma kayttoliittyma = new Kayttoliittyma(new Asetukset(20,16,5));
-        SwingUtilities.invokeLater(kayttoliittyma);
+        AsetuksetRuutu asetuksetRuutu = new AsetuksetRuutu();
+        asetuksetRuutu.run();
+        
+//        Kayttoliittyma kayttoliittyma = new Kayttoliittyma(new Asetukset(40,32,200));
+//        SwingUtilities.invokeLater(kayttoliittyma);
+        
     }
 }

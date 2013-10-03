@@ -4,13 +4,13 @@ package ohjelmalogiikka;
 import java.util.ArrayList;
 import java.util.Random;
 /**
- * Luokka, joka hallinnoi pelin Nappeja
+ * Luokka, joka konstruoi pelin alussa nappien sijainnit, ja tarkistaa pelin aikana pelitilanteen
  * @author Cadaei
  */
 public class Kentta {
-    private Asetukset asetukset;
     private ArrayList<Nappi> napit;
-    private ArrayList<Nappi> miinat;
+    private int leveys;
+    private int korkeus;
     
     /**
      * Konstruktori luo uuden kentän parametrina annettujen asetusten perusteella. 
@@ -18,20 +18,20 @@ public class Kentta {
      * @param asetukset Pelin asetukset
      */
     public Kentta(Asetukset asetukset) {
-        this.asetukset = asetukset;
         this.napit = new ArrayList();
-        this.miinat = new ArrayList();
-        sijoitaNapit();
+        this.leveys = asetukset.getKentanLeveys();
+        this.korkeus = asetukset.getKentanKorkeus();
+        sijoitaNapit(asetukset);
         kasvataMiinaLkm();
     }
     
     /**
      * Metodi kasvattaa kaikkien Miinojen ympärillä olevien EiMiinojen lukumäärää metodin lisaaMiinaViereen avulla
      */
-    public void kasvataMiinaLkm() {
+    private void kasvataMiinaLkm() {
         for (Nappi nappi : napit) {
-            if(nappi.getPiilotettuTeksti().equals("M")) {
-                lisaaMiinaViereen(nappi.getXkoordinaatti(), nappi.getYkoordinaatti());
+            if(nappi.onMiina()) {
+                lisaaMiinaViereen(nappi);
             }
         }
     }
@@ -44,12 +44,12 @@ public class Kentta {
     public ArrayList<Integer> arvoEriKoordinaatteja(int koordinaatteja) {
         ArrayList<Integer> koordinaatit = new ArrayList();
         Random random = new Random();
-        int koordinaatti=-1;
+        int koordinaatti;
         
         for (int i = 0; i < koordinaatteja; i++) {
-            koordinaatti=random.nextInt(asetukset.getKentanKorkeus()*asetukset.getKentanLeveys());
+            koordinaatti=random.nextInt(korkeus*leveys);
             while(koordinaatit.contains(koordinaatti)) {
-                koordinaatti=random.nextInt(asetukset.getKentanKorkeus()*asetukset.getKentanLeveys());
+                koordinaatti=random.nextInt(korkeus*leveys);
             }
             koordinaatit.add(koordinaatti);
         }
@@ -58,17 +58,17 @@ public class Kentta {
     }
     
     /**
-     * Metodi sijoittaa uudet napit kentälle
+     * Metodi arpoo miinojen sijainnit ja sijoittaa uudet napit kentälle.
+     * @param asetukset asetukset, joiden mukaan miinoja arvotaan
      */
-    public void sijoitaNapit() {
+    private void sijoitaNapit(Asetukset asetukset) {
         int x=0;
         int y=0;
-        ArrayList<Integer> miinojenKoodinaatit=arvoEriKoordinaatteja(asetukset.getMiinoja());
+        ArrayList<Integer> miinojenKoodinaatit = arvoEriKoordinaatteja(asetukset.getMiinoja());
         
         for (int i = 0; i < asetukset.getKentanKorkeus()*asetukset.getKentanLeveys(); i++) {
             if(miinojenKoodinaatit.contains(i)) {
                 napit.add(new Miina(x,y));
-                miinat.add(napit.get(napit.size()-1));
             } else {
                 napit.add(new EiMiina(x,y));
             }
@@ -80,94 +80,53 @@ public class Kentta {
         }
     }
     
-    /**
-     * Muuttaa annetussa koordinaatissa olevan napin näkyvyyden.
-     * @param x kaivettavan paikan x-koordinaatti
-     * @param y kaivettavan paikan y-koordinaatti
-     * @return totuusarvo siitä, jatkuuko peli vai ei
-     */
-    public boolean kaiva(int x, int y) {
-        nappiKoordinaatissa(x, y).teeNakyvaksi();
-        
-        if(nappiKoordinaatissa(x, y).getPiilotettuTeksti().equals("M")) {
-            return false;
-        }
-        
-        return true;
-    }
-    
-    public boolean lippu(int x, int y) {
-        return nappiKoordinaatissa(x, y).lippu();
-    }
-    
-    public void lisaaMiinaViereen(int x, int y) {
-        for (Nappi nappi : ymparillaOlevat(x, y)) {
-            nappi.lisaaMiinaViereen();
+    public void lisaaMiinaViereen(Nappi nappi) {
+        for (Nappi ymparilla : ymparillaOlevat(nappi)) {
+            ymparilla.lisaaMiinaViereen();
         }
     }
     
     /**
      * Apumetodi, joka palauttaa jossain koordinaatissa olevan napin ympärillä olevat napit listana
-     * @param xKoordinaatti kysytyn napin x-koordinaatti
-     * @param yKoordinaatti kysytyn napin y-koordinaatti
+     * @param nappi kysytty nappi
      * @return lista kysytyn napin ympärillä olevista napeista
      */
-    public ArrayList<Nappi> ymparillaOlevat(int xKoordinaatti, int yKoordinaatti) {
+    public ArrayList<Nappi> ymparillaOlevat(Nappi nappi) {
         ArrayList<Nappi> ymparillaOlevat = new ArrayList();
-        int indeksi = xKoordinaatti + yKoordinaatti * asetukset.getKentanLeveys();
         
-        if(xKoordinaatti != 0) {
-            ymparillaOlevat.add(napit.get(indeksi-1));
-            if(yKoordinaatti != 0) {
-                ymparillaOlevat.add(napit.get(indeksi-asetukset.getKentanLeveys()-1));
-            }
-            if(yKoordinaatti != this.asetukset.getKentanKorkeus()-1) {
-                ymparillaOlevat.add(napit.get(indeksi+asetukset.getKentanLeveys()-1));
+        for (Nappi nappi1 : napit) {
+            if(nappi.etaisyydenNelio(nappi1)<3) {
+                ymparillaOlevat.add(nappi1);
             }
         }
-        if(xKoordinaatti != this.asetukset.getKentanLeveys()-1) {
-            ymparillaOlevat.add(napit.get(indeksi+1));
-            if(yKoordinaatti != 0) {
-                ymparillaOlevat.add(napit.get(indeksi-asetukset.getKentanLeveys()+1));
-            }
-            if(yKoordinaatti != this.asetukset.getKentanKorkeus()-1) {
-                ymparillaOlevat.add(napit.get(indeksi+asetukset.getKentanLeveys()+1));
-            }
-        }
-        if(yKoordinaatti != 0) {
-            ymparillaOlevat.add(napit.get(indeksi-asetukset.getKentanLeveys()));
-        }
-        if(yKoordinaatti != asetukset.getKentanKorkeus()-1) {
-            ymparillaOlevat.add(napit.get(indeksi+asetukset.getKentanLeveys()));
-        }
+        ymparillaOlevat.remove(nappi);
         
         return ymparillaOlevat;
     }
     
     public Nappi nappiKoordinaatissa(int x, int y) {
-        return this.napit.get(x+y*asetukset.getKentanLeveys());
-    }
-
-    public ArrayList<Nappi> getMiinat() {
-        return miinat;
+        return this.napit.get(x+y*leveys);
     }
 
     public ArrayList<Nappi> getNapit() {
         return napit;
+    }
+
+    public int leveys() {
+        return leveys;
+    }
+    
+    public int korkeus() {
+        return korkeus;
     }
     
     /**
      * Metodi, joka palauttaa totuusarvon siitä, onko kaikki napit näkyviä ja kaikki miinat lipullisia
      * @return onko kaikki napit näkyviä
      */
-    public boolean kaikkiNapitNakyvia() {
+    public boolean kenttaSelva() {
         for (Nappi nappi : napit) {
-            if(!nappi.getOnNakyva()&&nappi.getPiilotettuTeksti()!="M") {
-                return false;
-            }
-        }
-        for (Nappi nappi : miinat) {
-            if(!nappi.getLipullinen()) {
+            if(!nappi.onMiina() && !nappi.onNakyva()) {
                 return false;
             }
         }
@@ -181,7 +140,7 @@ public class Kentta {
         
         for (Nappi nappi : napit) {
             tulostus+=nappi.toString();
-            if(nappi.getXkoordinaatti()==asetukset.getKentanLeveys()-1) {
+            if(nappi.xKoordinaatti()== leveys-1) {
                 tulostus += "\n";
             }
         }

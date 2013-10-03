@@ -33,7 +33,7 @@ public class MiinaTests {
     
     @Test
     public void miinanGetteritAntavatOikeatArvot() {
-        assertEquals("79",miina.getXkoordinaatti()+""+miina.getYkoordinaatti());
+        assertEquals("79",miina.xKoordinaatti()+""+miina.yKoordinaatti());
     }
     
     @Test

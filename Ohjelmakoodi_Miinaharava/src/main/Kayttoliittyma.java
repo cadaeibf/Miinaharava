@@ -7,28 +7,26 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import ohjelmalogiikka.Asetukset;
-import ohjelmalogiikka.Peli;
 
 /**
  * Luokka, joka luo ja ylläpitää uutta graafista käyttöliittymää
  * @author Cadaei
  */
-class Kayttoliittyma implements Runnable {
+public class Kayttoliittyma implements Runnable {
     private JFrame frame;
     private Asetukset asetukset;
-    private Peli peli;
+    private GraafinenKentta kentta;
     
     /**
      * luo uuden käyttöliittymän annettujen asetusten perusteella
      * @param asetukset annetut asetukset
      */
     public Kayttoliittyma(Asetukset asetukset) {
-        this.asetukset=asetukset;
+        this.asetukset = asetukset;
     }
     
     @Override
     public void run() {
-        peli=new Peli(asetukset);
         frame = new JFrame("Miinaharava");
         frame.setPreferredSize(new Dimension(25*asetukset.getKentanLeveys(),25*asetukset.getKentanKorkeus()));
         
@@ -41,7 +39,7 @@ class Kayttoliittyma implements Runnable {
     }
 
     private void luoKomponentit(Container container) {
-        GraafinenKentta kentta = new GraafinenKentta(peli, container,asetukset);
+        this.kentta = new GraafinenKentta(asetukset, container);
     }
     
 }

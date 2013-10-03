@@ -1,7 +1,6 @@
 
 package ohjelmalogiikka;
 
-import java.awt.List;
 /**
  * Luokka kuvaa kaikkia pelissä olevia nappeja, eli paikkoja joista voidaan kaivaa. 
  * Jokaisella Napilla on koodinaattien lisäksi tieto siitä, onko Nappi näkyvä, ja onko siihen asetettu lippu.
@@ -42,7 +41,10 @@ public class Nappi {
         this.piilotettuTeksti = piilotettuTeksti;
     }
     
-    
+    public int etaisyydenNelio(Nappi nappi) {
+        return (this.xkoordinaatti-nappi.xkoordinaatti)*(this.xkoordinaatti-nappi.xkoordinaatti)
+                + (this.ykoordinaatti-nappi.ykoordinaatti)*(this.ykoordinaatti-nappi.ykoordinaatti);
+    }
     
     public void setPiilotettuTeksti(String piilotettuTeksti) {
         this.piilotettuTeksti = piilotettuTeksti;
@@ -52,41 +54,46 @@ public class Nappi {
         this.onNakyva = true;
     }
 
-    public int getXkoordinaatti() {
+    public int xKoordinaatti() {
         return xkoordinaatti;
     }
 
-    public int getYkoordinaatti() {
+    public int yKoordinaatti() {
         return ykoordinaatti;
     }
 
-    public Boolean getOnNakyva() {
+    public Boolean onNakyva() {
         return onNakyva;
+    }
+    
+    public boolean eiMiinojaYmparilla() {
+        return this.piilotettuTeksti.equals("0");
+    }
+    
+    public Boolean onMiina() {
+        return this.piilotettuTeksti.equals("M");
     }
 
     public String getPiilotettuTeksti() {
         return piilotettuTeksti;
     }
     
-    public boolean lippu() {
+    /*
+     * Metodi, joka lisää tai poistaa lipun napista riippuen siitä, onko napissa lippua. 
+     */
+    public void lisaaLippu() {
         if(this.lipullinen) {
             this.lipullinen=false;
-            return false;
         } else {
             this.lipullinen=true;
-            return true;
         }
     }
 
-    public Boolean getLipullinen() {
+    public boolean onLipullinen() {
         return lipullinen;
     }
     
-    
-    
-    public void lisaaMiinaViereen() {
-        
-    }
+    public void lisaaMiinaViereen() {}
     
     @Override
     public String toString() {

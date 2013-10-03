@@ -46,63 +46,40 @@ public class KenttaTests {
     }
     
     @Test
-    public void kentanKaivaminenToimii1() {
-        kentta.kaiva(0, 0);
-        assertEquals("OXX\nXXX\nXXX\nXXX\n", kentta.toString());
-    }
-    
-    @Test
-    public void kentanKaivaminenToimii2() {
-        kentta.kaiva(1, 2);
-        assertEquals("XXX\nXXX\nXOX\nXXX\n", kentta.toString());
-    }
-    
-    @Test
-    public void kentanKaivaminenToimii3() {
-        kentta.kaiva(2, 3);
-        assertEquals("XXX\nXXX\nXXX\nXXO\n", kentta.toString());
-    }
-    
-    @Test
     public void ymparillaOlevatListanAlkioidenMaaraOikein1() {
-        ArrayList<Nappi> ymparillaOlevat = kentta.ymparillaOlevat(1,1);
+        ArrayList<Nappi> ymparillaOlevat = kentta.ymparillaOlevat(kentta.nappiKoordinaatissa(1,1));
         assertEquals(8, ymparillaOlevat.size());
     }
     
     @Test
     public void ymparillaOlevatListanAlkioidenMaaraOikein2() {
-        ArrayList<Nappi> ymparillaOlevat = kentta.ymparillaOlevat(0,1);
+        ArrayList<Nappi> ymparillaOlevat = kentta.ymparillaOlevat(kentta.nappiKoordinaatissa(0,1));
         assertEquals(5, ymparillaOlevat.size());
     }
     
     @Test
     public void ymparillaOlevatListanAlkioidenMaaraOikein3() {
-        ArrayList<Nappi> ymparillaOlevat = kentta.ymparillaOlevat(2,3);
+        ArrayList<Nappi> ymparillaOlevat = kentta.ymparillaOlevat(kentta.nappiKoordinaatissa(2,3));
         assertEquals(3, ymparillaOlevat.size());
     }
     
     @Test
     public void ymparillaOlevatOikein() {
-        for (Nappi nappi : kentta.ymparillaOlevat(1, 1)) {
+        for (Nappi nappi : kentta.ymparillaOlevat(kentta.nappiKoordinaatissa(1, 1))) {
             nappi.teeNakyvaksi();
         }
-        assertEquals("OOO\nOXO\nOOO\nXXX\n", kentta.toString());
+        assertEquals("000\n0X0\n000\nXXX\n", kentta.toString());
     }
     
     @Test
     public void randomKonstruktoriLisaaOikeanMaaranMiinojaListaan() {
         kentta= new Kentta(new Asetukset(10,5,5));
-        assertEquals("5", ""+kentta.getMiinat().size());
-    }
-    
-    @Test
-    public void MiinalistanAlkiotKaikkiMiinoja() {
-        kentta= new Kentta(new Asetukset(10,5,5));
-        String tuloste="";
-        for (Nappi nappi : kentta.getMiinat()) {
-            nappi.teeNakyvaksi();
-            tuloste+=nappi.toString();
+        int miinoja = 0;
+        for (Nappi nappi : kentta.getNapit()) {
+            if(nappi.onMiina()) {
+                miinoja++;
+            }
         }
-        assertEquals("MMMMM", tuloste);
+        assertEquals(5, miinoja);
     }
 }

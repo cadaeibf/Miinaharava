@@ -1,7 +1,6 @@
 
 package ohjelmalogiikka;
 
-import java.util.Scanner;
 /**
  * Luokka kuvaa Miinaharavapelin ohjelmalogiikkaa. Alussa luodaan pelin kenttä, ja jatkossa ylläpidetään peliä.
  * @author Cadaei
@@ -9,88 +8,61 @@ import java.util.Scanner;
 public class Peli {
     private Kentta kentta;
     private boolean onKaynnissa;
-    private Scanner scanner;
-    private String komento;
-    private Asetukset asetukset;
     private int miinojaJaljella;
 
     public Peli(Asetukset asetukset) {
-        this.asetukset=asetukset;
-        scanner = new Scanner(System.in);
+        this.kentta = new Kentta(asetukset);
+        this.onKaynnissa = true;
+        this.miinojaJaljella = asetukset.getMiinoja();
     }
     
-    public void run() {
-        uusiPeli(asetukset);
-        
-        while(onKaynnissa) {
-            tulostaKentta();
-            pelaaVuoro();
-            if(kentta.kaikkiNapitNakyvia()) {
-                lopetaPeli();
-                System.out.println("Voitit pelin!");
-            }
-        }
-    }
-    
-    public void uusiPeli(Asetukset asetukset) {
-        this.kentta=new Kentta(asetukset);
-        this.onKaynnissa=true;
-        this.miinojaJaljella=asetukset.getMiinoja();
-        tulostaKomennot();
-    }
-    
-    public void kaiva() {
-        int x,y;
-        System.out.print("x: ");
-        x= Integer.parseInt(scanner.nextLine());
-        System.out.print("y: ");
-        y=Integer.parseInt(scanner.nextLine());
-        
-        if(this.kentta.kaiva(x, y)==false) {
-            
-            lopetaPeli();
-        }
-    }
-    
-    public void lippu() {
-        int x,y;
-        System.out.print("x: ");
-        x= Integer.parseInt(scanner.nextLine());
-        System.out.print("y: ");
-        y=Integer.parseInt(scanner.nextLine());
-        if(this.kentta.lippu(x,y)) {
+    /*
+     * Metodi päivittää jäljelläolevien miinojen lukumäärää.
+     * @param nappi nappi, johon lippu on lisätty
+     */
+    public void lippuLisatty(Nappi nappi) {
+        if(nappi.onLipullinen()) {
             miinojaJaljella--;
-        }else {
+        } else {
             miinojaJaljella++;
         }
     }
     
+    /*
+     * Metodi tarkistaa, onko peli käynnissä, kun annetun napin paikasta on kaivettu
+     * @param nappi nappi, jonka osoittamasta paikasta on kaivettu
+     */
+    public void kaivettu(Nappi nappi) {
+        if(nappi.onMiina()) {
+            lopetaPeli();
+        }
+    }
+    
+    public boolean onVoitettu() {
+        return kentta.kenttaSelva();
+    }
+
+    public Kentta getKentta() {
+        return kentta;
+    }
+    
     public void lopetaPeli() {
-        tulostaKentta();
-        System.out.println("Hävisit pelin!");
         this.onKaynnissa=false;
     }
     
-    public void tulostaKentta() {
-        System.out.println("Miinoja Jäljellä: " + miinojaJaljella);
-        System.out.println(this.kentta.toString());
+    public boolean onKaynnissa() {
+        return this.onKaynnissa;
     }
     
-    public void tulostaKomennot() {
-        System.out.println("Komennot:\n--------\nn : uusi peli\nk : kaiva\nl : lippu(aseta/poista)\nx : lopeta\n--------");
+    public int miinojaJaljella() {
+        return this.miinojaJaljella;
     }
-
-    private void pelaaVuoro() {
-        System.out.print("Komento: ");
-        komento=scanner.nextLine();
-        if(komento.equals("n")) {
-            uusiPeli(asetukset);
-        } if(komento.equals("k")) {
-            kaiva();
-        } if(komento.equals("l")) {
-            lippu();
-        } if(komento.equals("x")) {
-            lopetaPeli();
-        }
+    
+    public int kentanLeveys() {
+        return this.kentta.leveys();
+    }
+    
+    public int kentanKorkeus() {
+        return this.kentta.korkeus();
     }
 }
