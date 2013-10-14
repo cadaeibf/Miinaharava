@@ -5,6 +5,7 @@ import grafiikka.GraafinenKentta;
 import grafiikka.GraafinenNappi;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.SwingUtilities;
 
 public class HiirenKuuntelija extends MouseAdapter {
     private GraafinenNappi graafinenNappi;
@@ -17,11 +18,14 @@ public class HiirenKuuntelija extends MouseAdapter {
     
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(e.getButton()==MouseEvent.BUTTON1) {
+        if(SwingUtilities.isLeftMouseButton(e)) {
             graafinenKentta.kaiva(graafinenNappi);
         }
-        if(e.getButton() == MouseEvent.BUTTON3) {
+        if(SwingUtilities.isRightMouseButton(e)) {
             graafinenKentta.lippu(graafinenNappi);
+        }
+        if(SwingUtilities.isMiddleMouseButton(e)) {
+            graafinenKentta.kaivaYmparilta(graafinenNappi);
         }
     }
 }

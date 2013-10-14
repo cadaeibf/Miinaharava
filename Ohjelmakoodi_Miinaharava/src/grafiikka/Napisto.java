@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import napinPainamiset.HiirenKuuntelija;
+import ohjelmalogiikka.EiMiina;
 import ohjelmalogiikka.Nappi;
 import ohjelmalogiikka.Peli;
 
@@ -49,6 +50,9 @@ public class Napisto {
      * @param paikka, josta kaivetaan
      */
     public void kaiva(GraafinenNappi graafinenNappi) {
+        if(!peli.onKaynnissa()) {
+            return;
+        }
         if(graafinenNappi.onNakyva()) {
             return;
         }
@@ -75,6 +79,23 @@ public class Napisto {
                     peli.lippuLisatty(graafinenNappi.getNappi());
                 }
             }
+    }
+    
+    public void kaivaYmparilta(GraafinenNappi graafinenNappi) {
+        if(!peli.onKaynnissa()) {
+            return;
+        }
+        if(!graafinenNappi.onNakyva()) {
+            return;
+        }
+        EiMiina eiMiina = (EiMiina) graafinenNappi.getNappi();
+        if(eiMiina.getMiinojaYmparilla()==peli.getKentta().lippujaYmparilla(eiMiina)) {
+            for (GraafinenNappi graafinenNappi1 : ymparillaOlevat(graafinenNappi)) {
+                if(!graafinenNappi1.onLipullinen()) {
+                    kaiva(graafinenNappi1);
+                }
+            }
+        }
     }
     
     private void lisaaNapit() {

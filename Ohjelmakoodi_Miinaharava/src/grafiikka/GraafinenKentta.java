@@ -82,6 +82,15 @@ public class GraafinenKentta {
         }
     }
     
+    public void kaivaYmparilta(GraafinenNappi graafinenNappi) {
+        napisto.kaivaYmparilta(graafinenNappi);
+        if(napisto.peliVoitettu()) {
+            voitto();
+        } else if(!napisto.peliKaynnissa()) {
+            havio();
+        }
+    }
+    
     public void voitto() {
         napisto.voitto();
         miinojaJaljella.setText(""+napisto.miinojaJaljella());

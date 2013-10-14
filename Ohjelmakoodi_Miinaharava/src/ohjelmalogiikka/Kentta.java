@@ -104,6 +104,18 @@ public class Kentta {
         return ymparillaOlevat;
     }
     
+    public int lippujaYmparilla(Nappi nappi) {
+        int lippuja = 0;
+        
+        for (Nappi nappi1 : ymparillaOlevat(nappi)) {
+            if(nappi1.onLipullinen()) {
+                lippuja++;
+            }
+        }
+        
+        return lippuja;
+    }
+    
     public Nappi nappiKoordinaatissa(int x, int y) {
         return this.napit.get(x+y*leveys);
     }
