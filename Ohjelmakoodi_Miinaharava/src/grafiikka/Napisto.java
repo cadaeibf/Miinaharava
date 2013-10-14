@@ -66,6 +66,18 @@ public class Napisto {
         }
     }
     
+    public void kaiva(int x, int y) {
+        GraafinenNappi kaivettava = nappiKoordinaatissa(x, y);
+        kaivettava.teeNakyvaksi();
+        peli.kaivettu(kaivettava.getNappi());
+        
+        if(kaivettava.eiMiinojaYmparilla()) {
+            for (GraafinenNappi graafinenNappi1 : ymparillaOlevat(kaivettava)) {
+                kaiva(graafinenNappi1);
+            }
+        }
+    }
+    
     
     /*
      * Metodi, joka lisää lipun annetun GraafisenNapin paikalle.
@@ -105,6 +117,10 @@ public class Napisto {
             graafinenNappi = new GraafinenNappi(nappi);
             nappiLista.add(graafinenNappi);
         }
+    }
+    
+    public GraafinenNappi nappiKoordinaatissa(int x, int y) {
+        return nappiLista.get(x+y*peli.kentanLeveys());
     }
     
     private void lisaaHiirenKuuntelijat(GraafinenKentta graafinenKentta) {

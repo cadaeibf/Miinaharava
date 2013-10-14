@@ -21,6 +21,7 @@ public class GraafinenKentta {
     private Asetukset asetukset;
     private JButton uusiPeli;
     private JLabel miinojaJaljella;
+    private boolean kaivamaton;
     
     
     public GraafinenKentta(Asetukset asetukset, Container container) {
@@ -34,6 +35,7 @@ public class GraafinenKentta {
         
         container.add(napisto.getJPanel(), BorderLayout.CENTER);
         container.add(luoYlapalkki(), BorderLayout.NORTH);
+        kaivamaton = true;
     }
     
     public void uusiPeli() {
@@ -74,7 +76,18 @@ public class GraafinenKentta {
     }
     
     public void kaiva(GraafinenNappi graafinenNappi) {
+        if(kaivamaton && graafinenNappi.onMiina()) {
+            int x = graafinenNappi.getNappi().xKoordinaatti();
+            int y = graafinenNappi.getNappi().yKoordinaatti();
+            uusiPeli();
+            GraafinenNappi kaivettava = napisto.nappiKoordinaatissa(x, y);
+            kaiva(kaivettava);
+            return;
+        }
+        
         napisto.kaiva(graafinenNappi);
+            
+        kaivamaton = false;
         if(napisto.peliVoitettu()) {
             voitto();
         } else if(!napisto.peliKaynnissa()) {
