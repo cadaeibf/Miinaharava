@@ -34,6 +34,10 @@ public class AsetuksetRuutu implements Runnable {
         frame.setVisible(true);
     }
     
+    public void piilota() {
+        frame.setVisible(false);
+    }
+    
     public void luoKomponentit(Container container) {
         container.setLayout(new GridLayout(4, 2));
         
@@ -41,7 +45,7 @@ public class AsetuksetRuutu implements Runnable {
         JTextArea y = new JTextArea("16");
         JTextArea miinoja = new JTextArea("100");
         JButton valmis = new JButton("Valmis");
-        valmis.addActionListener(new AsetustenLahettaminen(x, y, miinoja));
+        valmis.addActionListener(new AsetustenLahettaminen(x, y, miinoja, this));
         
         container.add(new JLabel("X:"));
         container.add(x);

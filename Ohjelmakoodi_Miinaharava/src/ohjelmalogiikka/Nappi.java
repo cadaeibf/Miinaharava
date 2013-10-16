@@ -16,8 +16,8 @@ public class Nappi {
 
     /**
      * Konsturktori ohjelman testausta varten. Konstruktori luo uuden napin, annettujen koordinaattien osoittamaan paikkaan.
-     * @param xkoordinaatti
-     * @param ykoordinaatti 
+     * @param xkoordinaatti Napin x-koordinaatti
+     * @param ykoordinaatti Napin y-koordinaatti
      */
     public Nappi(int xkoordinaatti, int ykoordinaatti) {
         this.xkoordinaatti = xkoordinaatti;
@@ -27,10 +27,10 @@ public class Nappi {
         this.piilotettuTeksti="O";
     }
     /**
-     * 
-     * @param xkoordinaatti
-     * @param ykoordinaatti
-     * @param piilotettuTeksti 
+     * Konstruktori, joka luo uuden Napin, jonka piilotettu teksti on annettu
+     * @param xkoordinaatti Napin x-koordinaatti
+     * @param ykoordinaatti Napin y-koordinaatti
+     * @param piilotettuTeksti Napin piilotettu teksti
      */
 
     public Nappi(int xkoordinaatti, int ykoordinaatti, String piilotettuTeksti) {
@@ -41,6 +41,11 @@ public class Nappi {
         this.piilotettuTeksti = piilotettuTeksti;
     }
     
+    /**
+     * Metodi, joka laskee kahden Napin etäisyyksien neliön Pythagoraan lauseen avulla
+     * @param nappi Nappi, jonka etäisyys kyseisestä napista lasketaan
+     * @return nappien etäisyyden neliö
+     */
     public int etaisyydenNelio(Nappi nappi) {
         return (this.xkoordinaatti-nappi.xkoordinaatti)*(this.xkoordinaatti-nappi.xkoordinaatti)
                 + (this.ykoordinaatti-nappi.ykoordinaatti)*(this.ykoordinaatti-nappi.ykoordinaatti);
@@ -78,7 +83,7 @@ public class Nappi {
         return piilotettuTeksti;
     }
     
-    /*
+    /**
      * Metodi, joka lisää tai poistaa lipun napista riippuen siitä, onko napissa lippua. 
      */
     public void lisaaLippu() {

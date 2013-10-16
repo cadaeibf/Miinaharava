@@ -80,6 +80,10 @@ public class Kentta {
         }
     }
     
+    /**
+     * Metodi kasvattaa annetun napin ympärillä olevien nappien miinalaskurin määrää yhdellä
+     * @param nappi Nappi, jonka ympärillä olevien nappien miinalaskurin määrää kasvatetaan
+     */
     public void lisaaMiinaViereen(Nappi nappi) {
         for (Nappi ymparilla : ymparillaOlevat(nappi)) {
             ymparilla.lisaaMiinaViereen();
@@ -139,6 +143,9 @@ public class Kentta {
     public boolean kenttaSelva() {
         for (Nappi nappi : napit) {
             if(!nappi.onMiina() && !nappi.onNakyva()) {
+                return false;
+            }
+            if(nappi.onMiina() && nappi.onNakyva()) {
                 return false;
             }
         }

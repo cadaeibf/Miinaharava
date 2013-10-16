@@ -81,7 +81,27 @@ public class GraafinenKentta {
             int y = graafinenNappi.getNappi().yKoordinaatti();
             uusiPeli();
             GraafinenNappi kaivettava = napisto.nappiKoordinaatissa(x, y);
-            kaiva(kaivettava);
+            kaiva(kaivettava, 1);
+            return;
+        }
+        
+        napisto.kaiva(graafinenNappi);
+            
+        kaivamaton = false;
+        if(napisto.peliVoitettu()) {
+            voitto();
+        } else if(!napisto.peliKaynnissa()) {
+            havio();
+        }
+    }
+    
+    public void kaiva(GraafinenNappi graafinenNappi, int rekursiokutsuja) {
+        if(kaivamaton && graafinenNappi.onMiina() && rekursiokutsuja < 100) {
+            int x = graafinenNappi.getNappi().xKoordinaatti();
+            int y = graafinenNappi.getNappi().yKoordinaatti();
+            uusiPeli();
+            GraafinenNappi kaivettava = napisto.nappiKoordinaatissa(x, y);
+            kaiva(kaivettava, ++rekursiokutsuja);
             return;
         }
         
