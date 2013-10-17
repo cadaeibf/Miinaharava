@@ -67,6 +67,7 @@ public class GraafinenKentta {
     }
     
     public void lippu(GraafinenNappi graafinenNappi) {
+        if(!napisto.peliKaynnissa()) return;
         napisto.lippu(graafinenNappi);
         
         miinojaJaljella.setText(""+napisto.miinojaJaljella());
@@ -76,6 +77,7 @@ public class GraafinenKentta {
     }
     
     public void kaiva(GraafinenNappi graafinenNappi) {
+        if(!napisto.peliKaynnissa()) return;
         if(kaivamaton && graafinenNappi.onMiina()) {
             int x = graafinenNappi.getNappi().xKoordinaatti();
             int y = graafinenNappi.getNappi().yKoordinaatti();
@@ -96,6 +98,7 @@ public class GraafinenKentta {
     }
     
     public void kaiva(GraafinenNappi graafinenNappi, int rekursiokutsuja) {
+        if(!napisto.peliKaynnissa()) return;
         if(kaivamaton && graafinenNappi.onMiina() && rekursiokutsuja < 100) {
             int x = graafinenNappi.getNappi().xKoordinaatti();
             int y = graafinenNappi.getNappi().yKoordinaatti();

@@ -9,6 +9,11 @@ import ohjelmalogiikka.EiMiina;
 import ohjelmalogiikka.Nappi;
 import ohjelmalogiikka.Peli;
 
+/**
+ * Luokka hallinnoi pelin GraafisiaNappeja listana, kokoaa napit jPanel-atribuuttiin graafista käyttöliittymää varten, 
+ * ja tarkistaa peli-atribuutin avulla pelitilanteen tarvittaessa.
+ * @author Cadaei
+ */
 public class Napisto {
     private Peli peli;
     private ArrayList<GraafinenNappi> nappiLista;
@@ -29,7 +34,7 @@ public class Napisto {
         }
     }
     
-    /*
+    /**
      * Metodi palauttaa annetun napin ympärillä olevat napit listana
      * @param graafinenNappi GraafinenNappi, jonka ympärillä olevat napit selvitetään
      * @return lista ympärillä olevista napeista
@@ -44,10 +49,10 @@ public class Napisto {
         return ymparillaOlevat;
     }
     
-    /*
+    /**
      * Metodi, joka kaivaa napistosta annetusta paikasta ja ilmoittaa kaivetun napin pelille 
      * Jos annetun napin ympärillä ei ole miinoja, kaivetaan kaikki muutkin miinattomat lähistön paikat
-     * @param paikka, josta kaivetaan
+     * @param graafinenNappi paikka, josta kaivetaan
      */
     public void kaiva(GraafinenNappi graafinenNappi) {
         if(!peli.onKaynnissa()) {
@@ -66,7 +71,7 @@ public class Napisto {
         }
     }
     
-    /*
+    /**
      * Metodi, joka lisää lipun annetun GraafisenNapin paikalle.
      * @param graafinenNappi paikka, johon lisätään lippu
      * @return totuusarvo siitä, onko peli voitettu
@@ -122,7 +127,7 @@ public class Napisto {
     
     public void naytaMiinat() {
         for (GraafinenNappi graafinenNappi : nappiLista) {
-            if(graafinenNappi.getNappi().onMiina()) {
+            if(graafinenNappi.onMiina()) {
                 graafinenNappi.teeNakyvaksi();
             }
         }
@@ -150,11 +155,12 @@ public class Napisto {
     
     public void voitto() {
         for (GraafinenNappi graafinenNappi : nappiLista) {
-            if(!graafinenNappi.onNakyva()) {
+            if(!graafinenNappi.onNakyva() && !graafinenNappi.onLipullinen()) {
                 graafinenNappi.lisaaLippu();
                 peli.lippuLisatty(graafinenNappi.getNappi());
             }
         }
+        peli.lopetaPeli();
     }
 
     @Override

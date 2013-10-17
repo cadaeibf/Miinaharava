@@ -5,7 +5,7 @@ import javax.swing.JButton;
 import ohjelmalogiikka.Nappi;
 
 /**
- * Nappi-luokan graafinen toteutus.
+ * Nappi-luokan graafinen toteutus. Luokka huolehtii pelitilanteen muutosten ilmoittamisesta ohjelmalogiikkaan Nappi-atribuutin avulla.
  * @author Cadaei
  */
 public class GraafinenNappi {
@@ -17,11 +17,17 @@ public class GraafinenNappi {
         this.painike=new JButton(" ");
     }
     
+    /**
+     * Metodi, asettaa muuttaa nappi-atribuutin näkyvyyttä, ja asettaa painikkeeseen napin mukaisen tekstin.
+     */
     public void teeNakyvaksi() {
         this.nappi.teeNakyvaksi();
         painike.setText(this.nappi.toString());
     }
     
+    /**
+     * Metodi muuttaa painikkeen tekstiä tilanteen mukaisesti ja raportoi muutoksesta ohjelmalogiikkaan nappi-atribuutin välityksellä.
+     */
     public void lisaaLippu() {
         if(this.onNakyva()) {
             return;
